@@ -4,7 +4,7 @@ import './Chat.css'
 import { v4 as uuidv4 } from 'uuid';
 
 // const myId = uuidv4();
-const socket = io('http://localhost:8080');
+const socket = io(process.env.REACT_APP_SERVER);
 socket.on('connect', () => {
   console.log('[IO] new connection');
 });
@@ -13,7 +13,7 @@ const Chat = () => {
   const [author, setAuthor] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [id, setId] = useState();
+  const [id, setId] = useState(uuidv4());
 
   useEffect(() => {
     const handleNewMessage = newMessage => setMessages([...messages, newMessage]);
@@ -46,7 +46,7 @@ const Chat = () => {
       <ul className="messages">
         {/* <li className="message">Hello There</li> */}
         {messages.map(m =>
-          <li className="message" key={m.id}>
+          <li id={m.id} className="message" key={m.id}>
             <strong>{m.author}:</strong>
             <p>{m.message}</p>
           </li>
